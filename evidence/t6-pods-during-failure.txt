@@ -1,0 +1,6 @@
+# 2026-10-19T21:47:31  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl get pods -l app=notice-board -L version -o wide
+NAME                            READY   STATUS    RESTARTS   AGE   IP            NODE                      NOMINATED NODE   READINESS GATES   VERSION
+notice-board-6784b7bcb6-5rw5h   0/1     Running   0          65s   10.244.2.13   cte412-02230158-worker    <none>           <none>            1.2.0-broken
+notice-board-6784b7bcb6-kvbrj   0/1     Running   0          65s   10.244.1.9    cte412-02230158-worker2   <none>           <none>            1.2.0-broken
+notice-board-6784b7bcb6-zb2dx   0/1     Running   0          65s   10.244.1.8    cte412-02230158-worker2   <none>           <none>            1.2.0-broken

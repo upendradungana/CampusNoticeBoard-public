@@ -1,0 +1,48 @@
+# 2026-10-19T21:47:29  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl describe deployment notice-board
+Name:               notice-board
+Namespace:          nb-02230158
+CreationTimestamp:  Mon, 19 Oct 2026 16:30:59 +0600
+Labels:             app=notice-board
+Annotations:        deployment.kubernetes.io/revision: 4
+                    kubernetes.io/change-cause: T6.1: release 1.2.0-broken (expected to fail)
+Selector:           app=notice-board
+Replicas:           3 desired | 3 updated | 3 total | 0 available | 3 unavailable
+StrategyType:       Recreate
+MinReadySeconds:    0
+Pod Template:
+  Labels:  app=notice-board
+           version=1.2.0-broken
+  Containers:
+   notice-board:
+    Image:      notice-board:02230158-1.2.0-broken
+    Port:       8080/TCP (http)
+    Host Port:  0/TCP (http)
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:         100m
+      memory:      64Mi
+    Liveness:      http-get http://:http/version delay=10s timeout=1s period=10s #success=1 #failure=3
+    Readiness:     http-get http://:http/healthz delay=0s timeout=1s period=2s #success=1 #failure=3
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    False   ProgressDeadlineExceeded
+OldReplicaSets:  notice-board-6864b57c68 (0/0 replicas created), notice-board-fc9576b (0/0 replicas created)
+NewReplicaSet:   notice-board-6784b7bcb6 (3/3 replicas created)
+Events:
+  Type    Reason             Age                    From                   Message
+  ----    ------             ----                   ----                   -------
+  Normal  ScalingReplicaSet  17m                    deployment-controller  Scaled up replica set notice-board-fc9576b from 0 to 3
+  Normal  ScalingReplicaSet  8m52s                  deployment-controller  Scaled down replica set notice-board-fc9576b from 3 to 0
+  Normal  ScalingReplicaSet  8m45s (x2 over 5h16m)  deployment-controller  Scaled up replica set notice-board-6864b57c68 from 0 to 3
+  Normal  ScalingReplicaSet  69s (x2 over 18m)      deployment-controller  Scaled down replica set notice-board-6864b57c68 from 3 to 0
+  Normal  ScalingReplicaSet  63s                    deployment-controller  Scaled up replica set notice-board-6784b7bcb6 from 0 to 3

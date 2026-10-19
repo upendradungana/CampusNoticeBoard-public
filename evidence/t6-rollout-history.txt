@@ -1,0 +1,8 @@
+# 2026-10-19T21:47:33  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl rollout history deployment/notice-board
+deployment.apps/notice-board 
+REVISION  CHANGE-CAUSE
+2         T5.1: Recreate release 1.0.0 -> 1.1.0
+3         T5.1: Recreate release 1.0.0 -> 1.1.0, decond run back to 1.0.0
+4         T6.1: release 1.2.0-broken (expected to fail)
+
