@@ -1,0 +1,42 @@
+# manifests/base/init.yaml
+# Purpose: Namespace, ResourceQuota and LimitRange for student 02230158.
+# Apply command: kubectl apply -f manifests/base/init.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nb-02230158                                   # spec: nb-<sid>
+  labels:
+    app.kubernetes.io/part-of: campus-noticeboard     # spec value, copied exactly from Task 1.2
+    cte412/practical: "06"                            # spec value "06" (quoted: label values must be strings)
+  annotations:
+    student.name: "REPLACE WITH YOUR FULL NAME"       # spec Task 1.2 asks for the FULL NAME, not the student number
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: notice-board-quota
+  namespace: nb-02230158
+spec:
+  hard:
+    requests.cpu: "1"       # spec; peak plan = 8 app Pods x 100m + monitor 10m = 810m
+    requests.memory: 1Gi    # spec; peak plan = 8 x 64Mi + 16Mi = 528Mi
+    limits.cpu: "2"         # spec; peak plan = 8 x 200m + 50m = 1650m
+    limits.memory: 2Gi      # spec; peak plan = 8 x 128Mi + 32Mi = 1056Mi
+    pods: "15"              # spec
+    count/services: "4"     # spec; plan uses 3 (notice-board, notice-board-ext, notice-board-preview)
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: notice-board-limits
+  namespace: nb-02230158
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 100m           # 1 CPU quota / 100m = 10 default-sized Pods; peak plan needs 9 (8 app + monitor)
+        memory: 128Mi       # 1Gi quota / 128Mi = 8 default-sized Pods; deliberately tight so unplanned Pods are refused early
+      default:
+        cpu: 200m           # 2x the request: allows bursts yet 10 Pods at the limit still fit the 2 CPU limit quota
+        memory: 256Mi       # 2x the request: 8 Pods at the limit exactly fill the 2Gi limit quota

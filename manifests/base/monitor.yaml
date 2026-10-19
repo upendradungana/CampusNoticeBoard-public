@@ -1,0 +1,35 @@
+# manifests/base/monitor.yaml
+# Purpose: Availability monitor. Requests http://notice-board/version every 0.5 s, forever, one log line per request.
+# Apply command: kubectl apply -f manifests/base/monitor.yaml   (apply ONCE; never restart between measurements)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: monitor
+  namespace: nb-02230158
+  labels:
+    app.kubernetes.io/part-of: campus-noticeboard
+    app: monitor                       # deliberately NOT app=notice-board so no Service/Deployment selector ever matches it
+spec:
+  containers:
+    - name: monitor
+      image: busybox:1.36.1            # busybox is allowed by the Alpine-only rule and ships wget + sh
+      imagePullPolicy: Never           # image is side-loaded with kind load; no registry pull allowed
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          while true; do
+            ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if body=$(wget -q -T 2 -O - http://notice-board/version 2>&1); then
+              echo "$ts OK $body"
+            else
+              echo "$ts FAIL ${body:-no-response}"
+            fi
+            sleep 0.5
+          done
+      resources:
+        requests:
+          cpu: 10m                     # tiny shell loop; keeps 990m of the 1 CPU request quota for the app
+          memory: 16Mi                 # busybox sh + wget need a few MiB
+        limits:
+          cpu: 50m                     # cap so a runaway loop cannot starve the app
+          memory: 32Mi                 # 2x request

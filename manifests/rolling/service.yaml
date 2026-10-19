@@ -1,0 +1,35 @@
+# manifests/rolling/service.yaml
+# Purpose: Internal (ClusterIP) and external (NodePort 30090) Services for the single-Deployment releases (Tasks 3, 5, 6).
+# Apply command: kubectl apply -f manifests/rolling/service.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+spec:
+  selector:
+    app: notice-board        # matches the Pods of the single Deployment
+  ports:
+    - name: http
+      port: 80               # spec: port 80
+      targetPort: http       # spec: the NAMED container port, not the number
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-ext
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+spec:
+  type: NodePort             # spec: reachable from the host
+  selector:
+    app: notice-board
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30090        # spec: must equal the kind extraPortMappings containerPort

@@ -1,0 +1,48 @@
+# manifests/rolling/deployment.yaml
+# Purpose: Single Deployment used for Tasks 3, 5 and 6. EDITED between tasks (see guide); one commit per edit.
+# Apply command: kubectl apply -f manifests/rolling/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-board
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+  annotations:
+    kubernetes.io/change-cause: "T3: initial deploy of 1.0.0, 3 replicas"   # recorded in rollout history (Task 5 requires one per revision)
+spec:
+  replicas: 3                                  # spec Task 3.1
+  selector:
+    matchLabels:
+      app: notice-board                        # immutable after creation; must match template labels
+  template:
+    metadata:
+      labels:
+        app: notice-board                      # spec Task 3.1; Services select on this
+        version: "1.0.0"                       # spec: label = image version (quoted so YAML keeps it a string)
+    spec:
+      containers:
+        - name: notice-board
+          image: notice-board:02230158-1.0.0   # locally built, side-loaded image
+          imagePullPolicy: Never               # spec Task 3.4: kubelet can NEVER attempt a registry pull
+          ports:
+            - name: http                       # named port referenced by the Services
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m                        # 8 Pods peak (Tasks 7/8) x 100m = 800m < 1 CPU quota
+              memory: 64Mi                     # node:alpine idles around 40 MiB; 8 x 64Mi = 512Mi < 1Gi
+            limits:
+              cpu: 200m                        # 2x request; 8 x 200m = 1600m < 2 CPU quota
+              memory: 128Mi                    # 2x request; 8 x 128Mi = 1Gi < 2Gi quota
+          readinessProbe:
+            httpGet:
+              path: /healthz                   # spec: readiness uses /healthz (fails during warm-up and in 1.2.0-broken)
+              port: http
+            periodSeconds: 2                   # probe often so Pods join the Service soon after warm-up ends
+          livenessProbe:
+            httpGet:
+              path: /version                   # NOT /healthz: /healthz is 500 during warm-up and forever in 1.2.0-broken,
+              port: http                       # so using it would make the kubelet kill healthy-but-warming or broken Pods in a restart loop
+            initialDelaySeconds: 10            # let the 5 s warm-up finish before the first liveness check
+            periodSeconds: 10                  # liveness is a slow last-resort check

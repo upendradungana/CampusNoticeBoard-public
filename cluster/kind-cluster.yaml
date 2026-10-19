@@ -1,0 +1,14 @@
+# cluster/kind-cluster.yaml
+# Purpose: 3-node kind cluster (1 control-plane + 2 workers) for CTE412 Practical, student 02230158
+# Apply command: kind create cluster --config cluster/kind-cluster.yaml --name cte412-02230158
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30090      # NodePort of Service notice-board-ext (Task 3.5)
+        hostPort: 30090           # same number on the host so curl 127.0.0.1:30090 works
+        listenAddress: 127.0.0.1  # loopback only: spec forbids exposing it on the LAN
+        protocol: TCP             # NodePort service uses TCP
+  - role: worker                  # worker 1 (spec: two workers)
+  - role: worker                  # worker 2

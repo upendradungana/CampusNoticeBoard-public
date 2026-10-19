@@ -1,0 +1,53 @@
+# manifests/bluegreen/services.yaml
+# Purpose: Production Services (notice-board, notice-board-ext) + preview Service. The ONLY edit for a switch is slot: below.
+# Apply command: kubectl apply -f manifests/bluegreen/services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+spec:
+  selector:
+    app: notice-board
+    slot: blue               # SWITCH POINT: blue -> green -> blue -> green (Task 7.4)
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-ext
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+spec:
+  type: NodePort             # host access on 127.0.0.1:30090 via the kind port mapping
+  selector:
+    app: notice-board
+    slot: blue               # SWITCH POINT: must always equal the value in Service notice-board
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-preview
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+spec:
+  selector:
+    app: notice-board
+    slot: green              # spec: preview ALWAYS targets green; never edited
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

@@ -1,0 +1,58 @@
+# manifests/bluegreen/deployment-blue.yaml
+# Purpose: "blue" colour of the blue/green release (image 1.0.0, 3 replicas). Same probes/resources as Task 3.
+# Apply command: kubectl apply -f manifests/bluegreen/deployment-blue.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-board-blue
+  namespace: nb-02230158
+  labels:
+    app: notice-board
+    slot: blue
+  annotations:
+    kubernetes.io/change-cause: "T7: blue slot, image 1.0.0"   # keeps rollout history readable
+spec:
+  replicas: 3                                  # spec Task 7.1
+  minReadySeconds: 5                           # a new Pod must stay Ready 5 s before counting as available (needed for the zero-failure flag rollout in Task 8)
+  progressDeadlineSeconds: 60                  # same failure deadline as Task 6
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0                        # never remove a serving Pod before its replacement is ready
+      maxSurge: 1                              # one extra Pod at a time keeps peak Pods (7 + monitor) inside the quota
+  selector:
+    matchLabels:
+      app: notice-board
+      slot: blue                                 # distinct selector per colour; selectors are immutable, so the two Deployments never fight over Pods
+  template:
+    metadata:
+      labels:
+        app: notice-board
+        slot: blue                               # spec Task 7.1: slot label drives Service routing
+        version: "1.0.0"                          # spec label = image version
+    spec:
+      containers:
+        - name: notice-board
+          image: notice-board:02230158-1.0.0      # side-loaded image
+          imagePullPolicy: Never               # never pull from a registry
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m                        # identical to Task 3
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz                   # gates Service membership
+              port: http
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /version                   # not /healthz (see manifests/rolling/deployment.yaml)
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
