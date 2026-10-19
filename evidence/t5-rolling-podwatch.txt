@@ -1,0 +1,6 @@
+21:24:36  NAME                            READY   STATUS    RESTARTS   AGE     VERSION
+21:24:36  notice-board-6864b57c68-8b4fb   1/1     Running   0          4h53m   1.0.0
+21:24:36  notice-board-6864b57c68-kdbm7   1/1     Running   0          4h53m   1.0.0
+21:24:36  notice-board-6864b57c68-w7vqn   1/1     Running   0          4h53m   1.0.0
+21:25:52  notice-board-6864b57c68-w7vqn   0/1     Running   0          4h54m   1.0.0
+21:25:56  notice-board-6864b57c68-w7vqn   1/1     Running   0          4h54m   1.0.0

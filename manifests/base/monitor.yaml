@@ -18,12 +18,14 @@ spec:
       args:
         - |
           while true; do
-            ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-            if body=$(wget -q -T 2 -O - http://notice-board/version 2>&1); then
-              echo "$ts OK $body"
-            else
-              echo "$ts FAIL ${body:-no-response}"
-            fi
+            (
+              ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+              if body=$(wget -q -T 2 -O - http://notice-board/version 2>&1); then
+                echo "$ts OK $body"
+              else
+                echo "$ts FAIL ${body:-no-response}"
+              fi
+            ) &
             sleep 0.5
           done
       resources:
