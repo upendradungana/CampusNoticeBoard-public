@@ -1,0 +1,11 @@
+Log file         : /w/evidence/t5-recreate-monitor.txt
+Total requests   : 259
+Failed requests  : 11
+First timestamp  : 2026-10-19T15:29:10Z
+Last timestamp   : 2026-10-19T15:33:25Z
+First failure    : 2026-10-19T15:29:34Z
+Last failure     : 2026-10-19T15:29:53Z
+Student id(s)    : 02230158 
+Responses per version value (count, first seen, last seen):
+  1.0.0              15   first=2026-10-19T15:29:10Z  last=2026-10-19T15:29:33Z
+  1.1.0             233   first=2026-10-19T15:29:55Z  last=2026-10-19T15:33:25Z

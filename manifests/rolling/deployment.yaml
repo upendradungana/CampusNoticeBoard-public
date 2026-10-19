@@ -59,7 +59,7 @@ metadata:
   labels:
     app: notice-board
   annotations:
-    kubernetes.io/change-cause: "T5.1: Recreate release 1.0.0 -> 1.1.0"
+    kubernetes.io/change-cause: "T5.1: Recreate release 1.0.0 -> 1.1.0, second run back to 1.0.0" 
 spec:
   strategy:
     type: Recreate        # spec Task 5.1: stop all old Pods first, then start new ones
@@ -71,11 +71,11 @@ spec:
     metadata:
       labels:
         app: notice-board                      # spec Task 3.1; Services select on this
-        version: "1.1.0"                       # spec: label = image version (quoted so YAML keeps it a string)
+        version: "1.0.0"                       # spec: label = image version (quoted so YAML keeps it a string)
     spec:
       containers:
         - name: notice-board
-          image: notice-board:02230158-1.1.0   # locally built, side-loaded image
+          image: notice-board:02230158-1.0.0   # locally built, side-loaded image
           imagePullPolicy: Never               # spec Task 3.4: kubelet can NEVER attempt a registry pull
           ports:
             - name: http                       # named port referenced by the Services
