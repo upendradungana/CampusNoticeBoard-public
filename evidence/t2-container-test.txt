@@ -1,0 +1,4 @@
+﻿container start: \16:28:37.414
+--- UNDER 5 s after start (\16:28:39.407) ---
+healthz HTTP 000
+--- OVER 5 s after start (16:29:27.567) ---
