@@ -1,0 +1,17 @@
+# 2026-10-19T21:58:22  context=kind-cte412-02230158  namespace=nb-02230158
+PS> "--- preview (expect 1.1.0) ---"
+  1..5 | ForEach-Object { kubectl exec monitor -- wget -q -O - http://notice-board-preview/version }
+  "--- production (expect 1.0.0) ---"
+  1..5 | ForEach-Object { kubectl exec monitor -- wget -q -O - http://notice-board/version }
+--- preview (expect 1.1.0) ---
+{"version":"1.1.0","student":"02230158","pod":"notice-board-green-65d97ddd75-bqsrw"}
+{"version":"1.1.0","student":"02230158","pod":"notice-board-green-65d97ddd75-5nkb8"}
+{"version":"1.1.0","student":"02230158","pod":"notice-board-green-65d97ddd75-bqsrw"}
+{"version":"1.1.0","student":"02230158","pod":"notice-board-green-65d97ddd75-lf5lt"}
+{"version":"1.1.0","student":"02230158","pod":"notice-board-green-65d97ddd75-lf5lt"}
+--- production (expect 1.0.0) ---
+{"version":"1.0.0","student":"02230158","pod":"notice-board-blue-784b8d6f8-ww5zz"}
+{"version":"1.0.0","student":"02230158","pod":"notice-board-blue-784b8d6f8-ww5zz"}
+{"version":"1.0.0","student":"02230158","pod":"notice-board-blue-784b8d6f8-ww5zz"}
+{"version":"1.0.0","student":"02230158","pod":"notice-board-blue-784b8d6f8-ww5zz"}
+{"version":"1.0.0","student":"02230158","pod":"notice-board-blue-784b8d6f8-ww5zz"}

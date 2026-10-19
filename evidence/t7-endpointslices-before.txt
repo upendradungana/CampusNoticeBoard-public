@@ -1,0 +1,79 @@
+# 2026-10-19T21:58:18  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl describe endpointslices -l kubernetes.io/service-name=notice-board
+  kubectl describe endpointslices -l kubernetes.io/service-name=notice-board-preview
+  kubectl get pods -l app=notice-board -L slot,version -o wide
+Name:         notice-board-kqp59
+Namespace:    nb-02230158
+Labels:       app=notice-board
+              endpointslice.kubernetes.io/managed-by=endpointslice-controller.k8s.io
+              kubernetes.io/service-name=notice-board
+Annotations:  endpoints.kubernetes.io/last-change-trigger-time: 2026-10-19T15:58:09Z
+AddressType:  IPv4
+Ports:
+  Name  Port  Protocol
+  ----  ----  --------
+  http  8080  TCP
+Endpoints:
+  - Addresses:  10.244.1.12
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-blue-784b8d6f8-xt6k5
+    NodeName:   cte412-02230158-worker2
+    Zone:       <unset>
+  - Addresses:  10.244.2.15
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-blue-784b8d6f8-kz4fs
+    NodeName:   cte412-02230158-worker
+    Zone:       <unset>
+  - Addresses:  10.244.1.13
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-blue-784b8d6f8-ww5zz
+    NodeName:   cte412-02230158-worker2
+    Zone:       <unset>
+Events:         <none>
+Name:         notice-board-preview-xhjfv
+Namespace:    nb-02230158
+Labels:       app=notice-board
+              endpointslice.kubernetes.io/managed-by=endpointslice-controller.k8s.io
+              kubernetes.io/service-name=notice-board-preview
+Annotations:  endpoints.kubernetes.io/last-change-trigger-time: 2026-10-19T15:58:09Z
+AddressType:  IPv4
+Ports:
+  Name  Port  Protocol
+  ----  ----  --------
+  http  8080  TCP
+Endpoints:
+  - Addresses:  10.244.2.16
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-green-65d97ddd75-5nkb8
+    NodeName:   cte412-02230158-worker
+    Zone:       <unset>
+  - Addresses:  10.244.1.14
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-green-65d97ddd75-lf5lt
+    NodeName:   cte412-02230158-worker2
+    Zone:       <unset>
+  - Addresses:  10.244.2.17
+    Conditions:
+      Ready:    true
+    Hostname:   <unset>
+    TargetRef:  Pod/notice-board-green-65d97ddd75-bqsrw
+    NodeName:   cte412-02230158-worker
+    Zone:       <unset>
+Events:         <none>
+NAME                                  READY   STATUS    RESTARTS   AGE   IP            NODE                      NOMINATED NODE   READINESS GATES   SLOT    VERSION
+notice-board-blue-784b8d6f8-kz4fs     1/1     Running   0          28s   10.244.2.15   cte412-02230158-worker    <none>           <none>            blue    1.0.0
+notice-board-blue-784b8d6f8-ww5zz     1/1     Running   0          28s   10.244.1.13   cte412-02230158-worker2   <none>           <none>            blue    1.0.0
+notice-board-blue-784b8d6f8-xt6k5     1/1     Running   0          28s   10.244.1.12   cte412-02230158-worker2   <none>           <none>            blue    1.0.0
+notice-board-green-65d97ddd75-5nkb8   1/1     Running   0          26s   10.244.2.16   cte412-02230158-worker    <none>           <none>            green   1.1.0
+notice-board-green-65d97ddd75-bqsrw   1/1     Running   0          25s   10.244.2.17   cte412-02230158-worker    <none>           <none>            green   1.1.0
+notice-board-green-65d97ddd75-lf5lt   1/1     Running   0          25s   10.244.1.14   cte412-02230158-worker2   <none>           <none>            green   1.1.0

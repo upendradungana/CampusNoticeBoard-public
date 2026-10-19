@@ -1,0 +1,12 @@
+# 2026-10-19T21:59:02  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl describe resourcequota notice-board-quota
+Name:            notice-board-quota
+Namespace:       nb-02230158
+Resource         Used   Hard
+--------         ----   ----
+count/services   3      4
+limits.cpu       1250m  2
+limits.memory    800Mi  2Gi
+pods             7      15
+requests.cpu     610m   1
+requests.memory  400Mi  1Gi
