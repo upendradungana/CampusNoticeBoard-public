@@ -1,0 +1,6 @@
+# 2026-10-19T21:57:42  context=kind-cte412-02230158  namespace=nb-02230158
+PS> kubectl delete -f manifests/rolling/deployment.yaml; kubectl wait --for=delete pod -l app=notice-board --timeout=90s
+deployment.apps "notice-board" deleted from nb-02230158 namespace
+pod/notice-board-6864b57c68-59b54 condition met
+pod/notice-board-6864b57c68-b6zj6 condition met
+pod/notice-board-6864b57c68-kj9gx condition met
