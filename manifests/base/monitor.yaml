@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
     - name: monitor
-      image: busybox:1.36.1            # busybox is allowed by the Alpine-only rule and ships wget + sh
+      image: busybox-local:1.36.1            # busybox is allowed by the Alpine-only rule and ships wget + sh
       imagePullPolicy: Never           # image is side-loaded with kind load; no registry pull allowed
       command: ["/bin/sh", "-c"]
       args:
